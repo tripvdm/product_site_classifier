@@ -1,2 +1,9 @@
-package PACKAGE_NAME;public interface ProductServiceConstant {
+public interface ProductServiceConstant {
+    String FAVOURITE = "favourite";
+    String LIKE = "like";
+    String BUY = "buy";
+    String CART = "cart";
+    String BASKET = "basket";
+    String PRICE = "price";
+    String BOOK = "book";
 }

@@ -1,7 +1,10 @@
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,11 +13,20 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ProductServiceTest {
     private static Logger logger;
+
+    private WebDriver driver;
+
+    @BeforeEach
+    public void setup() {
+        driver = new ChromeDriver();
+    }
 
     @BeforeAll
     public static void init() {
@@ -62,4 +74,20 @@ public class ProductServiceTest {
                 }).join();
     }
 
+    @Test
+    public void test() {
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        driver.get("https://www.selenium.dev/selenium/web/web-form.html");
+
+        WebElement textBox = driver.findElement(By.xpath(""));
+
+        WebElement message = driver.findElement(By.id("message"));
+        String value = message.getText();
+        assertEquals("Received!", value);
+    }
+
+    @AfterEach
+    public void teardown() {
+        driver.quit();
+    }
 }
