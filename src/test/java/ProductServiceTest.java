@@ -14,8 +14,11 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ProductServiceTest {
@@ -77,13 +80,21 @@ public class ProductServiceTest {
     @Test
     public void test() {
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-        driver.get("https://www.selenium.dev/selenium/web/web-form.html");
+        driver.get("https://www.wildberries.ru/catalog/215737385/detail.aspx");
 
-        WebElement textBox = driver.findElement(By.xpath(""));
+        List<WebElement> elements = driver.findElements(By.xpath(".//*"));
 
-        WebElement message = driver.findElement(By.id("message"));
-        String value = message.getText();
-        assertEquals("Received!", value);
+        Map<String, Integer> classNames = new HashMap<>();
+        for (WebElement webElement : elements) {
+            String attribute = webElement.getDomAttribute("class");
+            if (attribute != null) {
+                if (attribute.toLowerCase().contains("favorite")) {
+                    classNames.put(attribute, classNames.getOrDefault(attribute, 0) + 1);
+                }
+            }
+        }
+
+        logger.info("Названия классов " + classNames);
     }
 
     @AfterEach
