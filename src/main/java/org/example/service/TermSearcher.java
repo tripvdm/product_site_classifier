@@ -1,4 +1,4 @@
-package org.example;
+package org.example.service;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -22,11 +22,18 @@ public class TermSearcher {
         driver = new ChromeDriver();
     }
 
-    public void searchTerm() {
-        getUrlByDriver();
-
+    public void searchTerms() {
+        manageDriver();
         List<WebElement> elements = driver.findElements(By.xpath(".//*"));
+        searchTerms(elements);
+    }
 
+    private void manageDriver() {
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        driver.get(url);
+    }
+
+    private void searchTerms(List<WebElement> elements) {
         for (WebElement webElement : elements) {
             String attribute = webElement.getDomAttribute("class");
             if (attribute != null) {
@@ -37,8 +44,7 @@ public class TermSearcher {
         }
     }
 
-    private void getUrlByDriver() {
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-        driver.get(url);
+    public Map<String, Integer> getTermMap() {
+        return termMap;
     }
 }

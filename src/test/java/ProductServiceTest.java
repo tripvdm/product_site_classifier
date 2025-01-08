@@ -13,11 +13,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -77,25 +72,6 @@ public class ProductServiceTest {
                 }).join();
     }
 
-    @Test
-    public void test() {
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-        driver.get("https://www.wildberries.ru/catalog/215737385/detail.aspx");
-
-        List<WebElement> elements = driver.findElements(By.xpath(".//*"));
-
-        Map<String, Integer> classNames = new HashMap<>();
-        for (WebElement webElement : elements) {
-            String attribute = webElement.getDomAttribute("class");
-            if (attribute != null) {
-                if (attribute.toLowerCase().contains("favorite")) {
-                    classNames.put(attribute, classNames.getOrDefault(attribute, 0) + 1);
-                }
-            }
-        }
-
-        logger.info("Названия классов " + classNames);
-    }
 
     @AfterEach
     public void teardown() {
