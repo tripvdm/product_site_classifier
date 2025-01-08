@@ -8,7 +8,6 @@ import java.util.Map;
 
 class TermSearcherTest {
 
-
     @ParameterizedTest
     @ValueSource(strings = {"https://javarush.com/groups/posts/3365-podkljuchaem-k-nashemu-javarush-proektu-logirovanie-slf4f-i-log4j",
             "https://www.sports.ru",
@@ -17,9 +16,7 @@ class TermSearcherTest {
             "https://finance.mail.ru/2024-12-30/putin-peredal-proizvoditelya-bud-i-klinskogo-vo-vremennoe-upravlenie-64290835/"})
     void searchTerms(String url) {
         TermSearcher termSearcher = new TermSearcher(url);
-        termSearcher.searchTerms();
-
-        Map<String, Integer> termMap = termSearcher.getTermMap();
+        Map<String, Integer> termMap = termSearcher.searchTerms();
 
     }
 }

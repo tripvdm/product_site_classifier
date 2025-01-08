@@ -22,10 +22,10 @@ public class TermSearcher {
         driver = new ChromeDriver();
     }
 
-    public void searchTerms() {
+    public Map<String, Integer> searchTerms() {
         manageDriver();
         List<WebElement> elements = driver.findElements(By.xpath(".//*"));
-        searchTerms(elements);
+        return searchTerms(elements);
     }
 
     private void manageDriver() {
@@ -33,7 +33,7 @@ public class TermSearcher {
         driver.get(url);
     }
 
-    private void searchTerms(List<WebElement> elements) {
+    private Map<String, Integer> searchTerms(List<WebElement> elements) {
         for (WebElement webElement : elements) {
             String attribute = webElement.getDomAttribute("class");
             if (attribute != null) {
@@ -42,9 +42,7 @@ public class TermSearcher {
                 }
             }
         }
-    }
 
-    public Map<String, Integer> getTermMap() {
         return termMap;
     }
 }

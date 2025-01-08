@@ -57,7 +57,5 @@ public class TFIDFCalculator {
         TFIDFCalculator calculator = new TFIDFCalculator();
         double tfidf = calculator.tfIdf(doc1, documents, "ipsum");
         System.out.println("TF-IDF (ipsum) = " + tfidf);
-
-
     }
 }
