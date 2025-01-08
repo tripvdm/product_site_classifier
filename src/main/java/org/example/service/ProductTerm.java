@@ -2,6 +2,7 @@ package org.example.service;
 
 public enum ProductTerm {
     FAVORITE("favorite"),
+    FAVOURITE("favourite"),
     LIKE("like"),
     BUY("buy"),
     CART("cart"),

@@ -1,4 +1,4 @@
-package org.example;
+package org.example.model_predict;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,7 +8,7 @@ public class LogisticRegression {
     List<Double> Y;
     int maxIteration;
     double[] theta;
-    double cost;
+    public double cost;
     double alpha;
 
     public LogisticRegression(List<List<Double>> X, List<Double> Y) {

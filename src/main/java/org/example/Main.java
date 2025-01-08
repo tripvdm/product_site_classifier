@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.model_predict.LogisticRegression;
+
 import java.util.Arrays;
 import java.util.List;
 
