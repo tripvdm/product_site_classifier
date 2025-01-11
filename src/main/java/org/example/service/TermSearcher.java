@@ -24,10 +24,13 @@ public class TermSearcher {
     public Map<String, Integer> searchTerms() {
         new WebDriverWait(driver, Duration.ofSeconds(TIME_OUT_SECONDS))
                 .ignoring(StaleElementReferenceException.class)
-                .ignoring(TimeoutException.class)
                 .until((WebDriver d) -> {
-                    List<WebElement> elements = driver.findElements(By.xpath(".//*"));
-                    searchTerms(elements);
+                    try {
+                        List<WebElement> elements = d.findElements(By.xpath(".//*"));
+                        searchTerms(elements);
+                    } catch (TimeoutException e) {
+                        return false;
+                    }
                     return true;
                 });
 
