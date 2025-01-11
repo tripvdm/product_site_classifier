@@ -1,9 +1,6 @@
 package org.example.service;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -14,14 +11,12 @@ import java.util.Map;
 
 public class TermSearcher {
     private static final int TIME_OUT_SECONDS = 20;
-    private final String url;
 
     private final WebDriver driver;
 
     private final Map<String, Integer> termMap = new HashMap<>();
 
     public TermSearcher(final String url) {
-        this.url = url;
         driver = new ChromeDriver();
         driver.get(url);
     }
@@ -29,6 +24,7 @@ public class TermSearcher {
     public Map<String, Integer> searchTerms() {
         new WebDriverWait(driver, Duration.ofSeconds(TIME_OUT_SECONDS))
                 .ignoring(StaleElementReferenceException.class)
+                .ignoring(TimeoutException.class)
                 .until((WebDriver d) -> {
                     List<WebElement> elements = driver.findElements(By.xpath(".//*"));
                     searchTerms(elements);
@@ -56,9 +52,5 @@ public class TermSearcher {
                 termMap.put(term, termMap.getOrDefault(attribute, 0) + 1);
             }
         }
-    }
-
-    public void quitDriver() {
-        driver.quit();
     }
 }

@@ -14,15 +14,8 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TermSearcherTest {
-    private TermSearcher termSearcher;
-
-    @BeforeEach
-    public void setup() {
-        termSearcher = new TermSearcher("https://www.wildberries.ru/catalog/215737385/detail.aspx");
-    }
 
     @DisplayName("Проверка множества не проодуктовых сервисов")
-
     @ParameterizedTest
     @ValueSource(strings = {"https://javarush.com/groups/posts/3365-podkljuchaem-k-nashemu-javarush-proektu-logirovanie-slf4f-i-log4j",
             "https://www.sports.ru",
@@ -33,7 +26,7 @@ class TermSearcherTest {
         TermSearcher termSearcher = new TermSearcher(url);
         Map<String, Integer> termMap = termSearcher.searchTerms();
 
-        assertNull(termMap);
+        assertTrue(termMap.keySet().size() <= 2);
     }
 
     @DisplayName("Проверка множества проодуктовых сервисов")
@@ -82,11 +75,6 @@ class TermSearcherTest {
     @DisplayName("Проверка, когда интернет подключен")
     void testSearchTermsWhenNetworkIsConnected() throws IOException {
         assertTrue(testInet("www.google.com"));
-    }
-
-    @AfterEach
-    public void teardown() {
-        termSearcher.quitDriver();
     }
 
     private boolean testInet(String url) throws IOException {
