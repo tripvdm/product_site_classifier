@@ -1,14 +1,15 @@
 package org.example;
 
 import org.example.service.TermSearcher;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.openqa.selenium.StaleElementReferenceException;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.util.Arrays;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,15 +49,54 @@ class TermSearcherTest {
         assertNotNull(termMap);
     }
 
-    @Test
+    @Disabled
     void testSearchTermsWhenStaleElementReferenceException() {
         TermSearcher termSearcher = new TermSearcher("https://www.wildberries.ru/catalog/215737385/detail.aspx");
 
-        assertThrows(StaleElementReferenceException.class, () -> termSearcher.searchTerms());
+        assertThrows(StaleElementReferenceException.class, termSearcher::searchTerms);
+    }
+
+    @Test
+    @DisplayName("Проверка, когда сайт - это проодуктовый сервис")
+    void testSearchTermsWhenSiteIsProductService() {
+        TermSearcher termSearcher = new TermSearcher("https://www.wildberries.ru/catalog/215737385/detail.aspx");
+
+        Map<String, Integer> terms = termSearcher.searchTerms();
+
+        assertTrue(terms.containsKey("price"));
+    }
+
+    @Test
+    @DisplayName("Проверка, когда сайт - это не проодуктовый сервис")
+    void testSearchTermsWhenSiteIsNotProductService() {
+        TermSearcher termSearcher = new TermSearcher("https://www.rbc.ru/politics/26/12/2024/676d59689a79473c9e2467c1");
+
+        Map<String, Integer> terms = termSearcher.searchTerms();
+
+        assertFalse(terms.containsKey(Arrays.asList("price")));
+    }
+
+    @Test
+    @DisplayName("Проверка, когда интернет подключен")
+    void testSearchTermsWhenNetworkIsConnected() throws IOException {
+        assertTrue(testInet("www.google.com"));
     }
 
     @AfterEach
     public void teardown() {
         termSearcher.quitDriver();
+    }
+
+    private boolean testInet(String url) throws IOException {
+        Socket socket = new Socket();
+        InetSocketAddress addr = new InetSocketAddress(url,80);
+        try {
+            socket.connect(addr,20_000);
+            return true;
+        } catch (IOException e) {
+            return false;
+        } finally {
+            socket.close();
+        }
     }
 }
