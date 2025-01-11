@@ -9,7 +9,6 @@ import org.openqa.selenium.StaleElementReferenceException;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,6 +20,8 @@ class TermSearcherTest {
     public void setup() {
         termSearcher = new TermSearcher("https://www.wildberries.ru/catalog/215737385/detail.aspx");
     }
+
+    @DisplayName("Проверка множества не проодуктовых сервисов")
 
     @ParameterizedTest
     @ValueSource(strings = {"https://javarush.com/groups/posts/3365-podkljuchaem-k-nashemu-javarush-proektu-logirovanie-slf4f-i-log4j",
@@ -35,6 +36,7 @@ class TermSearcherTest {
         assertNull(termMap);
     }
 
+    @DisplayName("Проверка множества проодуктовых сервисов")
     @ParameterizedTest
     @ValueSource(strings = {"https://www.wildberries.ru/catalog/215737385/detail.aspx",
             "https://www.avito.ru/moskva/knigi_i_zhurnaly/bombovoe_izdanie_po_numerologii_2024_god_4517181458?context=H4sIAAAAAAAA_wEfAOD_YToxOntzOjEzOiJsb2NhbFByaW9yaXR5IjtiOjA7fQseF2QfAAAA",
@@ -63,7 +65,7 @@ class TermSearcherTest {
 
         Map<String, Integer> terms = termSearcher.searchTerms();
 
-        assertTrue(terms.containsKey("price"));
+        assertNotNull(terms.get("price"));
     }
 
     @Test
@@ -73,7 +75,7 @@ class TermSearcherTest {
 
         Map<String, Integer> terms = termSearcher.searchTerms();
 
-        assertFalse(terms.containsKey(Arrays.asList("price")));
+        assertFalse(terms.containsKey("price"));
     }
 
     @Test

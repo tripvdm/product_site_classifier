@@ -8,12 +8,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class TermSearcher {
+    private static final int TIME_OUT_SECONDS = 20;
     private final String url;
 
     private final WebDriver driver;
@@ -27,7 +27,7 @@ public class TermSearcher {
     }
 
     public Map<String, Integer> searchTerms() {
-        new WebDriverWait(driver, Duration.ofSeconds(10))
+        new WebDriverWait(driver, Duration.ofSeconds(TIME_OUT_SECONDS))
                 .ignoring(StaleElementReferenceException.class)
                 .until((WebDriver d) -> {
                     List<WebElement> elements = driver.findElements(By.xpath(".//*"));
